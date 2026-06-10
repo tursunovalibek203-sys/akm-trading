@@ -1,0 +1,60 @@
+# Environment
+.env
+.env.local
+.env.*.local
+*.pem
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Node.js / Next.js
+node_modules/
+.next/
+out/
+.vercel/
+npm-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker/postgres/data/
+
+# Frontend (alohida Vercel deployment)
+frontend/
+
+# MiyaAI session fayllar (git da saqlanmaydi)
+.claude/SESSION_LAST.md
+.claude/SESSION_HISTORY.md
+.claude/INCOMPLETE_WORK.md
+
+# Logs
+*.log
+logs/
+
+# Tests
+coverage/
+.coverage
+htmlcov/
+
+# Keys
+*.pem
+*.key
+private/
