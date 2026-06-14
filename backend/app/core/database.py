@@ -3,12 +3,24 @@ from sqlalchemy.orm import DeclarativeBase
 from app.core.config import settings
 
 
-engine = create_async_engine(
-    settings.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://"),
-    pool_size=settings.DATABASE_POOL_SIZE,
-    max_overflow=settings.DATABASE_MAX_OVERFLOW,
-    echo=settings.DEBUG,
-)
+def _make_engine():
+    url = settings.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://")
+    connect_args: dict = {}
+    # asyncpg accepts ssl as bool/SSLContext — not as a URL string param
+    for param in ("ssl=require", "ssl=true", "ssl=verify-full"):
+        url = url.replace(f"?{param}", "").replace(f"&{param}", "")
+    if "neon.tech" in url or settings.ENVIRONMENT == "production":
+        connect_args["ssl"] = True
+    return create_async_engine(
+        url,
+        pool_size=5,
+        max_overflow=2,
+        echo=settings.DEBUG,
+        connect_args=connect_args,
+    )
+
+
+engine = _make_engine()
 
 AsyncSessionLocal = async_sessionmaker(
     engine,
